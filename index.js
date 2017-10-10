@@ -6,6 +6,7 @@ var app =  express();
 var bigInt = require("big-integer");
 var db = mongoskin.db("mongodb://@localhost:27017/platzi-angular", {safe: true});
 var id = mongoskin.helper.toObjectID;
+var nombre = mongoskin.helper.toObjectID;
 
 var allowMethods = function(req, res, next) {
     res.header('Access-Control-Allow-Methods', "GET, POST, PUT, DELETE, PATCH, OPTIONS");
@@ -99,12 +100,24 @@ app.put('/api/:coleccion/:id', function(req, res, next) {
         if (e) return next(e);
         res.send((result === 1) ? {msg:'success'} : {msg:'error'});
     }); });
-// DELETE
-app.delete('/api/:coleccion/:nombre', function(req, res, next) { req.collection.remove({nombre : nombre(req.params.nombre) },
+
+// DELETEALL
+app.delete('/api/delete/:coleccion', function(req, res, next) { req.collection.remove({},
     function(e, result){
+        console.log("he llegado");
         if (e) return next(e);
         res.send((result === 1) ? {msg:'success'} : {msg:'error'});
     }); });
+
+// DELETE
+app.delete('/api/delete/:coleccion/:nombre', function(req, res, next) { req.collection.remove({nombre : nombre(req.params.nombre) },
+    function(e, result){
+    console.log("he llegado");
+        if (e) return next(e);
+        res.send((result === 1) ? {msg:'success'} : {msg:'error'});
+    }); });
+
+
 
 
 app.listen(8080, function(){
